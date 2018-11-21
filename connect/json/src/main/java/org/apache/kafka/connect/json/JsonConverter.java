@@ -575,7 +575,7 @@ public class JsonConverter implements Converter, HeaderConverter {
      * Convert this object, in the org.apache.kafka.connect.data format, into a JSON object, returning both the schema
      * and the converted object.
      */
-    private static JsonNode convertToJson(Schema schema, Object logicalValue) {
+    public static JsonNode convertToJson(Schema schema, Object logicalValue) {
         if (logicalValue == null) {
             if (schema == null) // Any schema is valid and we don't have a default, so treat this as an optional schema
                 return null;
@@ -691,7 +691,7 @@ public class JsonConverter implements Converter, HeaderConverter {
     }
 
 
-    private static Object convertToConnect(Schema schema, JsonNode jsonValue) {
+    public static Object convertToConnect(Schema schema, JsonNode jsonValue) {
         final Schema.Type schemaType;
         if (schema != null) {
             schemaType = schema.type();
@@ -754,5 +754,13 @@ public class JsonConverter implements Converter, HeaderConverter {
 
     private interface LogicalTypeConverter {
         Object convert(Schema schema, Object value);
+    }
+
+    public JsonSerializer getSerializer() {
+        return serializer;
+    }
+
+    public JsonDeserializer getDeserializer() {
+        return deserializer;
     }
 }
